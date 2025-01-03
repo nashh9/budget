@@ -1,4 +1,4 @@
-# budget
+# Budget
 1. Export CSV files from bank account(s) and format (folder 2025-01/csv_transactions has examples)
    - Column 1 - Date
    - Column 2 - Description
