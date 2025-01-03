@@ -10,41 +10,6 @@ log_all = True
 # console print detail
 print_all = False
 
-###########################
-# Categories
-###########################
-csvfilename = "categories.csv"
-
-if not (os.path.exists(csvfilename)):
-    print(csvfilename + " does not exist")
-    exit()
-
-
-# all categories
-categories_dictionary = {}
-category_amount_dictionary = {}
-
-# reading csv file
-with open(csvfilename, 'r') as csvfile:
-    # create a CSV reader object
-    csvreader = csv.reader(csvfile)
-
-    # extracting field names through first row
-    categories = next(csvreader)
-
-    # Iterate through each row in the CSV file
-    for row in csvreader:
-        i = 0
-        for col in row:
-            col_upper = col.upper()
-            categories_dictionary[col_upper] = categories[i]
-            category_amount_dictionary[categories[i]] = 0
-            i += 1
-
-    if print_all:
-        for key, value in categories_dictionary.items():
-            print(key + ": "+ value)
-
 # creating the date object of today's date 
 todays_date = datetime.date.today()
 
@@ -100,6 +65,46 @@ if not (os.path.exists(log_folder)):
 logfilename = date_prefix + "/" + "logs/{}_categorized.log".format(strftime('%Y-%m-%d__%H-%M-%S'))
 f = open(logfilename, "w")
 
+
+###########################
+# Categories
+###########################
+categoriesfilename = "categories.csv"
+categoriespath = csv_folder + "/" + categoriesfilename
+
+if not (os.path.exists(categoriespath)):
+    print(categoriespath + " does not exist")
+    exit()
+
+# all categories
+categories_dictionary = {}
+category_amount_dictionary = {}
+
+# all transactions list
+transactions_list = []
+
+# reading csv file
+with open(categoriespath, 'r') as csvfile:
+    # create a CSV reader object
+    csvreader = csv.reader(csvfile)
+
+    # extracting field names through first row
+    categories = next(csvreader)
+
+    # Iterate through each row in the CSV file
+    for row in csvreader:
+        i = 0
+        for col in row:
+            col_upper = col.upper()
+            categories_dictionary[col_upper] = categories[i]
+            category_amount_dictionary[categories[i]] = 0
+            i += 1
+
+    if print_all:
+        for key, value in categories_dictionary.items():
+            print(key + ": "+ value)
+
+
 ################################################
 # Function to add transaction cost to category
 ################################################
@@ -108,6 +113,7 @@ def add_up_category_costs(category, price):
         category_amount_dictionary[category] += price
     else:
         category_amount_dictionary[category] = price
+
 
 ##########################################
 # Function to categorize transactions
@@ -121,8 +127,6 @@ def categorize_transaction(info, price):
                 break
     return categories_dictionary[key]
 
-# all transactions list
-transactions_list = []
 
 ###########################
 # Go through CSV files
