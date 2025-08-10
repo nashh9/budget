@@ -170,12 +170,18 @@ if log_all:
         f.write(str(transaction) + "\n")
     f.write("\n")
 
-######################################
-# Print out categories alphabetically
-######################################
+######################################################################
+# Print out categories alphabetically to log file and csv file
+######################################################################
 sorted_category_amount_dictionary = dict(sorted(category_amount_dictionary.items()))
 
 for key, value in sorted_category_amount_dictionary.items():
     f.write(key + "," + format(value, '.2f') + "\n")
 
+csvlogfilename = date_prefix + "/" + "logs/{}_categorized.csv".format(strftime('%Y-%m-%d__%H-%M-%S'))
+f_csv = open(csvlogfilename, "w")
+for key, value in sorted_category_amount_dictionary.items():
+    f_csv.write(key + "," + format(value, '.2f') + "\n")
+
 f.close()
+f_csv.close()
